@@ -11,11 +11,7 @@ const AdminDashboard = () => {
     const [isAdding, setIsAdding] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        checkUser();
-    }, []);
-
-    const checkUser = () => {
+    const checkUser = React.useCallback(() => {
         // Client-side authentication check
         const isAdmin = sessionStorage.getItem('isAdmin');
         if (isAdmin !== 'true') {
@@ -23,7 +19,11 @@ const AdminDashboard = () => {
         } else {
             fetchLinks();
         }
-    };
+    }, [navigate]);
+
+    useEffect(() => {
+        checkUser();
+    }, [checkUser]);
 
     const fetchLinks = async () => {
         try {
@@ -53,7 +53,7 @@ const AdminDashboard = () => {
             const { error } = await supabase.from('links').delete().eq('id', id);
             if (error) throw error;
             setLinks(links.filter(link => link.id !== id));
-        } catch (error) {
+        } catch {
             alert('Error deleting link. Ensure database policies allow public writes.');
         }
     };

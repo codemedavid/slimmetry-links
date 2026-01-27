@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { supabase } from './lib/supabase';
+// import { supabase } from './lib/supabase'; // Unused in static layout
 import LinkButton from './components/LinkButton';
 import Footer from './components/Footer';
 import Login from './pages/Login';
@@ -8,40 +8,10 @@ import AdminDashboard from './pages/AdminDashboard';
 import './App.css';
 
 // Public Home Component
+// Public Home Component
 const Home = () => {
-  const [links, setLinks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Static layout only for now per user request
 
-  useEffect(() => {
-    fetchLinks();
-  }, []);
-
-  const fetchLinks = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('links')
-        .select('*')
-        .order('order', { ascending: true });
-
-      if (data && data.length > 0) {
-        setLinks(data);
-      } else {
-        // Fallback to initial links if DB is empty to ensure site works
-        console.log('No links in DB, using fallback.');
-        setLinks([
-          { text: 'Place Your Order', href: 'https://tiny.cc/paureorder', icon: '🛒' },
-          { text: 'Tirzepatide Overview (Full Product & Education Guide)', href: 'https://www.canva.com/design/DAG-M5mcJYU/LlFfBr5OHdBKYF1_mzoMoA/view?utm_content=DAG-M5mcJYU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h71df313386', icon: '📘' },
-          { text: 'Welcome Guide (Start Here)', href: 'https://tiny.cc/paureguide', icon: '📖' },
-          { text: 'Contact PAURE', href: 'https://tiny.cc/paurecontactus', icon: '💬' },
-          { text: 'Facebook — PAURE Wellness', href: 'https://www.facebook.com/paurewellness', icon: '📘' },
-        ]);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="app-container">
@@ -50,22 +20,19 @@ const Home = () => {
       <div className="bg-decor bg-orb-2"></div>
       <div className="bg-decor bg-orb-3"></div>
 
-      {/* Background Butterfly */}
-      <img src="/butterfly.png" alt="" className="bg-butterfly" />
-
       {/* Header Section */}
       <header className="header animate-fade-in">
         <div className="logo-container">
           <img
-            src="/logo.png"
-            alt="PAURE Logo"
+            src="/slimmetry-logo.png"
+            alt="Slimmetry Logo"
             className="logo-img"
           />
           <div className="logo-glow"></div>
         </div>
 
         <h1 className="brand-name">
-          PAURE
+          Slimmetry
         </h1>
         <p className="brand-tagline">
           peptides, redefined
@@ -74,23 +41,31 @@ const Home = () => {
 
       {/* Links Section */}
       <main className="links-container">
-        {loading ? (
-          <div className="text-[var(--color-text-light)] opacity-70 italic mt-4">loading...</div>
-        ) : links.length > 0 ? (
-          links.map((link, index) => (
-            <LinkButton
-              key={link.id || index}
-              text={link.text}
-              href={link.href}
-              icon={link.icon}
-              delay={0.1 + (index * 0.05)}
-            />
-          ))
-        ) : (
-          <div className="text-[var(--color-text-light)] opacity-70 italic mt-4">
-            No links available.
-          </div>
-        )}
+        {/* Group 1: Main Actions */}
+        <LinkButton text="Products & Pricelist" href="#" icon="📋" delay={0.1} />
+        <LinkButton text="Place an Order" href="https://tiny.cc/paureorder" icon="🛒" delay={0.15} />
+        <LinkButton text="Proofs & Testimonials" href="#" icon="✨" delay={0.2} />
+
+        <div className="section-divider"></div>
+
+        {/* Group 2: Info & Contact */}
+        <LinkButton text="Guidelines & Safety Information" href="https://tiny.cc/paureguide" icon="🛡️" delay={0.25} />
+        <LinkButton text="Contact Us — Slimmetry Manila" href="https://tiny.cc/paurecontactus" icon="💬" delay={0.3} />
+
+        <div className="section-divider"></div>
+
+        {/* Group 3: Branches */}
+        <LinkButton text="Slimmetry Davao" href="#" icon="📍" delay={0.35} />
+        <LinkButton text="Slimmetry Bacolod" href="#" icon="📍" delay={0.4} />
+
+        <div className="section-divider"></div>
+
+        {/* Group 4: Community */}
+        <div className="w-full flex flex-col items-center">
+          <LinkButton text="Join Our Telegram Community" href="#" icon="✈️" delay={0.45} />
+          <p className="telegram-subtext">2,000+ members</p>
+          <p className="telegram-note">Please send us a DM before joining.</p>
+        </div>
       </main>
 
       <Footer />

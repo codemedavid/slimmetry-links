@@ -31,14 +31,15 @@ create policy "Public can manage links"
   using (true);
 
 -- SEED DATA
-do $$
-begin
-  if not exists (select 1 from links) then
-    insert into links (text, href, icon, "order") values
-    ('Place Your Order', 'https://tiny.cc/paureorder', '🛒', 1),
-    ('Tirzepatide Overview (Full Product & Education Guide)', 'https://www.canva.com/design/DAG-M5mcJYU/LlFfBr5OHdBKYF1_mzoMoA/view?utm_content=DAG-M5mcJYU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h71df313386', '📘', 2),
-    ('Welcome Guide (Start Here)', 'https://tiny.cc/paureguide', '📖', 3),
-    ('Contact PAURE', 'https://tiny.cc/paurecontactus', '💬', 4),
-    ('Facebook — PAURE Wellness', 'https://www.facebook.com/paurewellness', '📘', 5);
-  end if;
-end $$;
+-- WARNING: This will clear all existing links and reset them to the default set
+DELETE FROM links;
+
+insert into links (text, href, icon, "order") values
+    ('Products & Pricelist', '#', '📋', 1),
+    ('Place an Order', '#', '🛒', 2),
+    ('Proofs & Testimonials', '#', '✨', 3),
+    ('Guidelines & Safety Information', '#', '🛡️', 4),
+    ('Contact Us — Slimmetry Manila', '#', '💬', 5),
+    ('Slimmetry Davao', '#', '📍', 6),
+    ('Slimmetry Bacolod', '#', '📍', 7),
+    ('Join Our Telegram Community', '#', '✈️', 8);

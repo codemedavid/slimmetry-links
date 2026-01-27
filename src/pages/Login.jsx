@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 const Login = () => {
-    const HARDCODED_PASS = 'paurelink@Admin!123';
+    const HARDCODED_PASS = 'slimmetry@Admin!123';
 
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
