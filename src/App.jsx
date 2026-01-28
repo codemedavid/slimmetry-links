@@ -35,7 +35,10 @@ const Home = () => {
           Slimmetry
         </h1>
         <p className="brand-tagline">
-          peptides, redefined
+          Your partner in the journey to confidence.
+        </p>
+        <p className="brand-tagline" style={{ marginTop: '0.25rem', fontSize: '0.9em' }}>
+          glow. slim. transform.
         </p>
       </header>
 
