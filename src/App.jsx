@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import { supabase } from './lib/supabase'; // Unused in static layout
+import { supabase } from './lib/supabase';
 import LinkButton from './components/LinkButton';
 import Footer from './components/Footer';
 import Login from './pages/Login';
@@ -10,8 +10,28 @@ import './App.css';
 // Public Home Component
 // Public Home Component
 const Home = () => {
-  // Static layout only for now per user request
+  const [links, setLinks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    fetchLinks();
+  }, []);
+
+  const fetchLinks = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('links')
+        .select('*')
+        .order('order', { ascending: true });
+
+      if (error) throw error;
+      setLinks(data || []);
+    } catch (error) {
+      console.error('Error fetching links:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="app-container">
@@ -44,31 +64,24 @@ const Home = () => {
 
       {/* Links Section */}
       <main className="links-container">
-        {/* Group 1: Main Actions */}
-        <LinkButton text="Products & Pricelist" href="#" icon="📋" delay={0.1} />
-        <LinkButton text="Place an Order" href="https://tiny.cc/paureorder" icon="🛒" delay={0.15} />
-        <LinkButton text="Proofs & Testimonials" href="#" icon="✨" delay={0.2} />
+        {loading ? (
+          <div style={{ color: 'var(--color-text-secondary)', marginTop: '2rem' }}>Loading links...</div>
+        ) : (
+          links.map((link, index) => (
+            <LinkButton
+              key={link.id}
+              text={link.text}
+              href={link.href}
+              icon={link.icon}
+              delay={0.1 + (index * 0.05)}
+            />
+          ))
+        )}
 
-        <div className="section-divider"></div>
-
-        {/* Group 2: Info & Contact */}
-        <LinkButton text="Guidelines & Safety Information" href="https://tiny.cc/paureguide" icon="🛡️" delay={0.25} />
-        <LinkButton text="Contact Us — Slimmetry Manila" href="https://tiny.cc/paurecontactus" icon="💬" delay={0.3} />
-
-        <div className="section-divider"></div>
-
-        {/* Group 3: Branches */}
-        <LinkButton text="Slimmetry Davao" href="#" icon="📍" delay={0.35} />
-        <LinkButton text="Slimmetry Bacolod" href="#" icon="📍" delay={0.4} />
-
-        <div className="section-divider"></div>
-
-        {/* Group 4: Community */}
-        <div className="w-full flex flex-col items-center">
-          <LinkButton text="Join Our Telegram Community" href="#" icon="✈️" delay={0.45} />
-          <p className="telegram-subtext">2,000+ members</p>
-          <p className="telegram-note">Please send us a DM before joining.</p>
-        </div>
+        {/* Fallback for empty state if needed, though admin usually seeds data */}
+        {!loading && links.length === 0 && (
+          <p style={{ color: 'var(--color-text-secondary)' }}>No links available.</p>
+        )}
       </main>
 
       <Footer />
