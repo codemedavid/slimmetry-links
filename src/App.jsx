@@ -68,13 +68,20 @@ const Home = () => {
           <div style={{ color: 'var(--color-text-secondary)', marginTop: '2rem' }}>Loading links...</div>
         ) : (
           links.map((link, index) => (
-            <LinkButton
-              key={link.id}
-              text={link.text}
-              href={link.href}
-              icon={link.icon}
-              delay={0.1 + (index * 0.05)}
-            />
+            <React.Fragment key={link.id}>
+              <LinkButton
+                text={link.text}
+                href={link.href}
+                icon={link.icon}
+                delay={0.1 + (index * 0.05)}
+              />
+              {link.text.includes('Contact Us') && (
+                <div className="contact-subtext animate-fade-in" style={{ animationDelay: `${0.1 + (index * 0.05) + 0.1}s` }}>
+                  <p className="contact-members">2,000+ members</p>
+                  <p className="contact-note">Send a DM before joining</p>
+                </div>
+              )}
+            </React.Fragment>
           ))
         )}
 

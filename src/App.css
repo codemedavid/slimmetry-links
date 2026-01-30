@@ -1,4 +1,5 @@
 /* App Container */
+/* App Container */
 .app-container {
   min-height: 100vh;
   display: flex;
@@ -8,6 +9,10 @@
   position: relative;
   overflow: hidden;
   width: 100%;
+  background-image: url('/background-main.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 /* Background Decor */
@@ -140,6 +145,27 @@
   font-style: italic;
   color: var(--color-text-light);
   letter-spacing: 0.05em;
+}
+
+/* Contact Subtext */
+.contact-subtext {
+  text-align: center;
+  margin-top: -0.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+.contact-members {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.contact-note {
+  font-size: 0.8rem;
+  font-style: italic;
+  opacity: 0.8;
 }
 
 /* Links Container */
